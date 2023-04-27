@@ -20,23 +20,33 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> findAllByYear(Year year) {
+    public List<Subject> findAllSubjectsByYear(Year year) {
         return subjectRepository.findAllByYear(year);
     }
 
     @Override
-    public List<Subject> findAllBySemester(SemesterType semesterType) {
+    public List<Subject> findAllSubjectsBySemester(SemesterType semesterType) {
         return subjectRepository.findAllBySemesterType(semesterType);
     }
 
     @Override
-    public List<Subject> findAllByModule(String moduleName) {
+    public List<Subject> findAllSubjectsByModule(String moduleName) {
         return subjectRepository.findAllByModuleName(moduleName);
     }
 
     @Override
-    public List<Subject> findAllByProfessorName(String professorName) {
+    public List<Subject> findAllSubjectsByProfessorName(String professorName) {
         return subjectRepository.findByProfessorName(professorName);
+    }
+
+    @Override
+    public List<Subject> findAllSubjectsByYearAndSemesterType(Year year, SemesterType semesterType) {
+        return subjectRepository.findAllByYearAndSemesterType(year,semesterType);
+    }
+
+    @Override
+    public List<Subject> findAllSubjectsByName(String name) {
+        return subjectRepository.findAllByNameContainingIgnoreCase(name);
     }
 
 

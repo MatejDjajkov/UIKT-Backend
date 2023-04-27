@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
+
+
     List<Subject> findAllByYear(Year year);
     List<Subject> findAllBySemesterType(SemesterType semesterType);
 
@@ -22,4 +24,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     @Query("SELECT s FROM Subject s JOIN s.professors p WHERE p.name = :professorName")
     List<Subject> findByProfessorName(@Param("professorName") String professorName);
+
+    List<Subject> findAllByYearAndSemesterType(Year year, SemesterType semesterType);
+
+    List<Subject> findAllByNameContainingIgnoreCase(String name);
 }

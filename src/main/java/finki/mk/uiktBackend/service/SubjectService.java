@@ -9,11 +9,15 @@ import java.util.List;
 public interface SubjectService {
     List<Subject> getAllSubjects();
 
-    List<Subject> findAllByYear(Year year);
+    List<Subject> findAllSubjectsByYear(Year year);
 
-    List<Subject> findAllBySemester(SemesterType semesterType);
+    List<Subject> findAllSubjectsBySemester(SemesterType semesterType);
 
-    List<Subject> findAllByModule(String moduleName);
+    List<Subject> findAllSubjectsByModule(String moduleName);
 
-    List<Subject> findAllByProfessorName(String professorName);
+    List<Subject> findAllSubjectsByProfessorName(String professorName);
+
+    List<Subject> findAllSubjectsByYearAndSemesterType(Year year,SemesterType semesterType);
+
+    List<Subject> findAllSubjectsByName(String name);
 }
