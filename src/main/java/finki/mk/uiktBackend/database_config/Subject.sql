@@ -1,3 +1,4 @@
+
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Бизнис и менаџмент', 'Зимски', 'Прва');
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Вовед во компјутерските науки', 'Зимски', 'Прва');
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Професионални вештини', 'Зимски', 'Прва');
