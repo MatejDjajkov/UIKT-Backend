@@ -28,4 +28,5 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     List<Subject> findAllByYearAndSemesterType(Year year, SemesterType semesterType);
 
     List<Subject> findAllByNameContainingIgnoreCase(String name);
+
 }
