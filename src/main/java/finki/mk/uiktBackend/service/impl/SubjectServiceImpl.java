@@ -27,6 +27,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public Subject getById(Long id) {
+        return subjectRepository.findById(id).get();
+    }
+
+    @Override
     public List<Subject> findAllSubjectsByYear(Year year) {
         return subjectRepository.findAllByYear(year);
     }
@@ -80,13 +85,12 @@ public class SubjectServiceImpl implements SubjectService {
 
     //UPDATE Operation
     @Override
-    public void editSubject(Long id, String subjectName, SemesterType semesterType, Year year, List<Professor> professors, List<Module> modules) {
+    public void editSubject(Long id, String subjectName, SemesterType semesterType, Year year) {
         Subject subject=this.subjectRepository.findById(id).orElseThrow(SubjectNotFoundException::new);
         subject.setName(subjectName);
         subject.setSemesterType(semesterType);
         subject.setYear(year);
-        subject.setProfessors(professors);
-        subject.setModules(modules);
+        this.subjectRepository.save(subject);
     }
 
 

@@ -1,6 +1,7 @@
 package finki.mk.uiktBackend.model;
 
 import finki.mk.uiktBackend.model.enums.ExamType;
+import finki.mk.uiktBackend.model.enums.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,5 +27,8 @@ public class File {
     private String mimeType;
 
     private byte[] content;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }

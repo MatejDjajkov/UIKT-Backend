@@ -14,6 +14,8 @@ public interface SubjectService {
     //READ Operations
     List<Subject> getAllSubjects();
 
+    Subject getById(Long id);
+
     List<Subject> findAllSubjectsByYear(Year year);
 
     List<Subject> findAllSubjectsBySemester(SemesterType semesterType);
@@ -36,7 +38,7 @@ public interface SubjectService {
 
     //UPDATE OPERATION
 
-    public void editSubject(Long id,String subjectName,SemesterType semesterType,Year year,List<Professor> professors,List<Module> modules);
+    public void editSubject(Long id,String subjectName,SemesterType semesterType,Year year);
 
 
 }
