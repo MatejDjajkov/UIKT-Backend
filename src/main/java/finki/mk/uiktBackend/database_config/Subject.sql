@@ -1,4 +1,3 @@
-
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Бизнис и менаџмент', 'Зимски', 'Прва');
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Вовед во компјутерските науки', 'Зимски', 'Прва');
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Професионални вештини', 'Зимски', 'Прва');
@@ -175,4 +174,3 @@ INSERT INTO subject ("name", "semester_type", "year") VALUES ('ИКТ за ра�
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Интелигентни информациски системи', 'Летен', 'Четврта');
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Пресметковна биологија', 'Летен', 'Четврта');
 INSERT INTO subject ("name", "semester_type", "year") VALUES ('Програмски јазици и компајлери', 'Летен', 'Четврта');
-

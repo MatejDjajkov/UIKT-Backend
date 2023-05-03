@@ -1,5 +1,7 @@
 package finki.mk.uiktBackend.model.helpers;
 
+import finki.mk.uiktBackend.model.enums.SemesterType;
+import finki.mk.uiktBackend.model.enums.Year;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class SubjectHelperAdd {
 
     private String name;
-    private Long year;
-    private Long semesterType;
+    private Year year;
+    private SemesterType semesterType;
 }
