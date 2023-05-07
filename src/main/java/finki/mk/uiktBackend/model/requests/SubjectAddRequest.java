@@ -1,4 +1,4 @@
-package finki.mk.uiktBackend.model.helpers;
+package finki.mk.uiktBackend.model.requests;
 
 import finki.mk.uiktBackend.model.enums.SemesterType;
 import finki.mk.uiktBackend.model.enums.Year;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectHelperAdd {
+public class SubjectAddRequest {
 
     private String name;
-    private Year year;
-    private SemesterType semesterType;
+    private int year;
+    private int semesterType;
 }

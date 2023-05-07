@@ -2,11 +2,11 @@ package finki.mk.uiktBackend.service.impl;
 
 import finki.mk.uiktBackend.model.Subject;
 import finki.mk.uiktBackend.model.auth.Role;
-import finki.mk.uiktBackend.model.auth.User;
+import finki.mk.uiktBackend.model.auth.UserInApp;
 import finki.mk.uiktBackend.model.auth.UserRoles;
-import finki.mk.uiktBackend.model.dto.UserDetailsDto;
+import finki.mk.uiktBackend.model.responses.UserDetailsResponse;
 import finki.mk.uiktBackend.model.exceptions.UserNotFoundException;
-import finki.mk.uiktBackend.model.helpers.UserRegisterHelper;
+import finki.mk.uiktBackend.model.requests.UserRegisterRequest;
 import finki.mk.uiktBackend.repository.RoleRepository;
 import finki.mk.uiktBackend.repository.UserRepository;
 import finki.mk.uiktBackend.repository.UserRoleRepository;
@@ -42,15 +42,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findUserByEmail(String email) {
+    public UserInApp findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public void register(String email, String password, UserRegisterHelper helper) {
+    public void register(String email, String password, UserRegisterRequest request) {
 
-        User user = new User(email, passwordEncoder.encode(password), helper.getUsername(), helper.getName(),
-                helper.getSurname(), LocalDateTime.now());
+        UserInApp user = new UserInApp(email, passwordEncoder.encode(password), request.getUsername(), request.getName(),
+                request.getSurname(), LocalDateTime.now());
         userRepository.save(user);
 
         UserRoles userRole = new UserRoles();
@@ -61,36 +61,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean passwordMatches(User user, String password) {
+    public boolean passwordMatches(UserInApp user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
     @Override
-    public UserDetailsDto getUserDetails() {
+    public UserDetailsResponse getUserDetails() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmail(email);
+        UserInApp user = userRepository.findByEmail(email);
 
-        UserDetailsDto userDetailsDto = new UserDetailsDto();
-        userDetailsDto.setUsername(user.getUsername());
-        userDetailsDto.setEmail(user.getEmail());
-        userDetailsDto.setId(user.getId());
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
+        userDetailsResponse.setUsername(user.getUsername());
+        userDetailsResponse.setEmail(user.getEmail());
+        userDetailsResponse.setId(user.getId());
 
         List<UserRoles> roles = user.getRoles();
         List<String> userRoleNames = new ArrayList<>();
         for(UserRoles role : roles){
             userRoleNames.add(role.getRole().getName());
         }
-        userDetailsDto.setRoles(userRoleNames);
+        userDetailsResponse.setRoles(userRoleNames);
 
-        return userDetailsDto;
+        return userDetailsResponse;
 
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = this.findUserByEmail(email);
+        UserInApp user = this.findUserByEmail(email);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (var role : user.getRoles()) {
@@ -101,12 +101,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findById(Long id){
+    public UserInApp findById(Long id){
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public void takeSubject(User user, Subject subject) {
+    public void takeSubject(UserInApp user, Subject subject) {
         List<Subject> subjects=user.getFavoriteSubjects();
         if(!subjects.contains(subject)) {
             subjects.add(subject);
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void removeSubject(User user, Subject subject) {
+    public void removeSubject(UserInApp user, Subject subject) {
         List<Subject> subjects=user.getFavoriteSubjects();
         subjects.stream().filter(s -> s.equals(subject)).findFirst().map(i -> subjects.remove(i));
         user.setFavoriteSubjects(subjects);

@@ -3,7 +3,6 @@ package finki.mk.uiktBackend.service;
 
 import finki.mk.uiktBackend.model.File;
 import finki.mk.uiktBackend.model.enums.ExamType;
-import finki.mk.uiktBackend.model.enums.Status;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

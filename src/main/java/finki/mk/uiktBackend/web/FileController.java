@@ -33,12 +33,12 @@ public class FileController {
         return fileService.findApprovedFilesForSubject(id);
     }
 
-    // Long type -> String examType
     @PostMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void uploadFiles(@PathVariable Long id, @RequestParam("examType") ExamType examType,
+    public void uploadFiles(@PathVariable Long id, @RequestParam("type") int type,
                             @RequestParam("files") List<MultipartFile> files){
 
+        ExamType examType = ExamType.getEnumByIndex(type);
         for(MultipartFile file : files){
             fileService.saveFile(id, file, examType);
         }

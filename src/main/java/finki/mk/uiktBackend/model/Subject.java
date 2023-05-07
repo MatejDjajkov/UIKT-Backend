@@ -1,6 +1,7 @@
 package finki.mk.uiktBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import finki.mk.uiktBackend.model.auth.UserInApp;
 import finki.mk.uiktBackend.model.enums.SemesterType;
 import finki.mk.uiktBackend.model.enums.Year;
 import lombok.Data;
@@ -29,9 +30,9 @@ public class Subject {
     @OneToMany
     private List<File> files;
 
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "favoriteSubjects", fetch = FetchType.EAGER)
-//    private List<User> usersSubject;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "favoriteSubjects")
+    private List<UserInApp> usersSubject;
 
     @ManyToMany(mappedBy = "subjects")
     private List<Professor> professors;

@@ -10,8 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "users", schema = "auth_user")
-public class User {
+public class UserInApp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class User {
     @ManyToMany
     private List<Subject> favoriteSubjects;
 
-    public User(String email, String password, String username, String name, String surname, LocalDateTime date_created) {
+    public UserInApp(String email, String password, String username, String name, String surname, LocalDateTime date_created) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -43,7 +42,7 @@ public class User {
         this.surname = surname;
         this.date_created = date_created;
     }
-    public User(){
+    public UserInApp(){
         this.roles=new ArrayList<>();
         this.favoriteSubjects=new ArrayList<>();
     }

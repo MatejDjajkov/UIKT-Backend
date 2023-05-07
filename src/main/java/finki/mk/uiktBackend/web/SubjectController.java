@@ -4,14 +4,15 @@ import finki.mk.uiktBackend.model.Subject;
 import finki.mk.uiktBackend.model.enums.SemesterType;
 import finki.mk.uiktBackend.model.enums.Year;
 import finki.mk.uiktBackend.model.exceptions.SubjectAlreadyExistsException;
-import finki.mk.uiktBackend.model.helpers.SubjectHelperAdd;
-import finki.mk.uiktBackend.model.helpers.SubjectHelperEdit;
+import finki.mk.uiktBackend.model.requests.SubjectAddRequest;
+import finki.mk.uiktBackend.model.requests.SubjecEditRequest;
 import finki.mk.uiktBackend.service.SubjectService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -33,11 +34,12 @@ public class SubjectController {
         return subjectService.getById(id);
     }
 
-    // Long yearId -> String year
-    // Long semesterId -> String semester
     @GetMapping("/filter/semester")
-    public List<Subject> getAllSubjectsByYearAndSemester(@RequestParam(required = false) SemesterType semester, @RequestParam Year year) {
-        if (semester == null) {
+    public List<Subject> getAllSubjectsByYearAndSemester(@RequestParam Integer yearId, @RequestParam(required = false) Integer semesterId) {
+        Year year = Arrays.stream(Year.values()).toList().stream().filter(x -> x.ordinal() == (yearId-1)).findFirst().orElse(null);
+        SemesterType semester = Arrays.stream(SemesterType.values()).toList().stream().filter(x ->  semesterId != null && x.ordinal() == (semesterId-1)).findFirst().orElse(null);
+
+        if (semester == null ) {
             return subjectService.findAllSubjectsByYear(year);
         } else {
             return subjectService.findAllSubjectsByYearAndSemesterType(year, semester);
@@ -60,20 +62,25 @@ public class SubjectController {
         return subjectService.getAllSubjects().size();
     }
 
-    // SemesterType and Year da se prakaat kako Stringovi
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void addSubject(@RequestBody SubjectHelperAdd request) {
+    public void addSubject(@RequestBody SubjectAddRequest request) {
         if (subjectService.findAllSubjectsByName(request.getName()).size() != 0) {
             throw new SubjectAlreadyExistsException();
         }
-        subjectService.createSubject(request.getName(),request.getSemesterType(),request.getYear(),new ArrayList<>(),new ArrayList<>());
+
+        SemesterType semester = SemesterType.getEnumByIndex(request.getSemesterType());
+        Year year = Year.getEnumByIndex(request.getYear());
+        subjectService.createSubject(request.getName(),semester,year,new ArrayList<>(),new ArrayList<>());
     }
 
     @PostMapping("/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void editSubject(@RequestBody SubjectHelperEdit request) {
-        subjectService.editSubject(request.getId(), request.getName(),request.getSemesterType(), request.getYear());
+    public void editSubject(@RequestBody SubjecEditRequest request) {
+
+        SemesterType semester = SemesterType.getEnumByIndex(request.getSemesterType());
+        Year year = Year.getEnumByIndex(request.getYear());
+        subjectService.editSubject(request.getId(), request.getName(),semester, year);
     }
 
     @GetMapping("/delete/{id}")
