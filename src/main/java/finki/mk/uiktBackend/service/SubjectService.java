@@ -25,6 +25,7 @@ public interface SubjectService {
     List<Subject> findAllSubjectsByProfessorName(String professorName);
 
     List<Subject> findAllSubjectsByYearAndSemesterType(Year year,SemesterType semesterType);
+    List<Subject> filterSubjects(Integer semesterType, Integer year, Long moduleId, Long professorId);
 
     List<Subject> findAllSubjectsByName(String name);
 
