@@ -14,7 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -55,6 +57,24 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> findAllSubjectsByYearAndSemesterType(Year year, SemesterType semesterType) {
         return subjectRepository.findAllByYearAndSemesterType(year,semesterType);
+    }
+
+    @Override
+    public List<Subject> filterSubjects(Integer semesterType, Integer year, Long moduleId, Long professorId) {
+        List<Subject> filteredSubjects = getAllSubjects();
+        if(semesterType!=null){
+            filteredSubjects=filteredSubjects.stream().filter(x->x.getSemesterType().equals(SemesterType.getEnumByIndex(semesterType))).collect(Collectors.toList());
+        }
+        if(year!=null){
+            filteredSubjects=filteredSubjects.stream().filter(x->x.getYear().equals(Year.getEnumByIndex(year))).collect(Collectors.toList());
+        }
+        if(moduleId!=null){
+            filteredSubjects=filteredSubjects.stream().filter(x->x.getModules().stream().filter(y->y.getId().equals(moduleId)).findFirst().orElse(null)!=null).collect(Collectors.toList());
+        }
+        if(professorId!=null){
+            filteredSubjects=filteredSubjects.stream().filter(x->x.getProfessors().stream().filter(y->y.getId().equals(professorId)).findFirst().orElse(null)!=null).collect(Collectors.toList());
+        }
+        return filteredSubjects;
     }
 
     @Override

@@ -8,6 +8,7 @@ import finki.mk.uiktBackend.model.requests.SubjectAddRequest;
 import finki.mk.uiktBackend.model.requests.SubjecEditRequest;
 import finki.mk.uiktBackend.service.SubjectService;
 import org.springframework.data.domain.Page;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +35,13 @@ public class SubjectController {
         return subjectService.getById(id);
     }
 
-    @GetMapping("/filter/semester")
-    public List<Subject> getAllSubjectsByYearAndSemester(@RequestParam Integer yearId, @RequestParam(required = false) Integer semesterId) {
-        Year year = Arrays.stream(Year.values()).toList().stream().filter(x -> x.ordinal() == (yearId-1)).findFirst().orElse(null);
-        SemesterType semester = Arrays.stream(SemesterType.values()).toList().stream().filter(x ->  semesterId != null && x.ordinal() == (semesterId-1)).findFirst().orElse(null);
+    @GetMapping("/filter")
+    public List<Subject> getAllSubjectsByYearAndSemester(@RequestParam(required = false) @Nullable Integer semesterTypeId,
+                                                         @RequestParam(required = false) @Nullable Integer yearId,
+                                                         @RequestParam(required = false) @Nullable Long moduleId,
+                                                         @RequestParam(required = false) @Nullable Long professorId) {
 
-        if (semester == null ) {
-            return subjectService.findAllSubjectsByYear(year);
-        } else {
-            return subjectService.findAllSubjectsByYearAndSemesterType(year, semester);
-        }
+        return subjectService.filterSubjects(semesterTypeId,yearId,moduleId,professorId);
     }
 
     @GetMapping("/search")
