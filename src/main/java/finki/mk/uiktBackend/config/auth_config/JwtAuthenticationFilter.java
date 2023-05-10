@@ -1,6 +1,6 @@
-package finki.mk.uiktBackend.config;
+package finki.mk.uiktBackend.config.auth_config;
 
-import finki.mk.uiktBackend.model.auth.User;
+import finki.mk.uiktBackend.model.auth.UserInApp;
 import finki.mk.uiktBackend.model.exceptions.AccessForbiddenException;
 import finki.mk.uiktBackend.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             String email = emailPassword[0];
 
             String password = emailPassword[1];
-            User user = userService.findUserByEmail(email);
+            UserInApp user = userService.findUserByEmail(email);
             List<GrantedAuthority> authorities = jwtUtils.addAuthoritiesFromRoles(user, password);
 
             return authenticationManager.authenticate(

@@ -2,24 +2,24 @@ package finki.mk.uiktBackend.service;
 
 
 import finki.mk.uiktBackend.model.Subject;
-import finki.mk.uiktBackend.model.auth.User;
-import finki.mk.uiktBackend.model.dto.UserDetailsDto;
-import finki.mk.uiktBackend.model.helpers.UserRegisterHelper;
+import finki.mk.uiktBackend.model.auth.UserInApp;
+import finki.mk.uiktBackend.model.responses.UserDetailsResponse;
+import finki.mk.uiktBackend.model.requests.UserRegisterRequest;
 
 public interface UserService {
-    User findUserByEmail(String email);
+    UserInApp findUserByEmail(String email);
 
-    void register(String email, String password, UserRegisterHelper helper);
+    void register(String email, String password, UserRegisterRequest request);
 
     //    void resetPassword(String password);
-    boolean passwordMatches(User user, String password);
+    boolean passwordMatches(UserInApp user, String password);
 
-    UserDetailsDto getUserDetails();
+    UserDetailsResponse getUserDetails();
 
-    User findById(Long id);
+    UserInApp findById(Long id);
 
-    void takeSubject(User user, Subject subject);
+    void takeSubject(UserInApp user, Subject subject);
 
-    void removeSubject(User user, Subject subject);
+    void removeSubject(UserInApp user, Subject subject);
 
 }

@@ -33,7 +33,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findAllSubjectsByYear(Year year) {
-        return subjectRepository.findAllByYear(year);
+        List<Subject> s =  subjectRepository.findAllByYear(year);
+        return s;
     }
 
     @Override

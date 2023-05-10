@@ -1,4 +1,4 @@
-package finki.mk.uiktBackend.config;
+package finki.mk.uiktBackend.config.auth_config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

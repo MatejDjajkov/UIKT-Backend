@@ -1,4 +1,4 @@
-package finki.mk.uiktBackend.config;
+package finki.mk.uiktBackend.config.auth_config;
 
 import finki.mk.uiktBackend.service.UserService;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,5 @@
 package finki.mk.uiktBackend.repository;
 
-import finki.mk.uiktBackend.model.Professor;
 import finki.mk.uiktBackend.model.Subject;
 import finki.mk.uiktBackend.model.enums.SemesterType;
 import finki.mk.uiktBackend.model.enums.Year;
@@ -13,8 +12,6 @@ import java.util.List;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
-
-
 
     List<Subject> findAllByYear(Year year);
     List<Subject> findAllBySemesterType(SemesterType semesterType);

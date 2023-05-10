@@ -1,7 +1,7 @@
-package finki.mk.uiktBackend.config;
+package finki.mk.uiktBackend.config.auth_config;
 
 import com.auth0.jwt.JWT;
-import finki.mk.uiktBackend.model.auth.User;
+import finki.mk.uiktBackend.model.auth.UserInApp;
 import finki.mk.uiktBackend.model.exceptions.PasswordDoNotMatchException;
 import finki.mk.uiktBackend.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -28,7 +28,7 @@ public class JWTUtils {
         this.userService = userService;
     }
 
-    public List<GrantedAuthority> addAuthoritiesFromRoles(User user, String password) {
+    public List<GrantedAuthority> addAuthoritiesFromRoles(UserInApp user, String password) {
         List<GrantedAuthority> authorities = new ArrayList<>();
             if (!userService.passwordMatches(user, password)) {
                 throw new PasswordDoNotMatchException();

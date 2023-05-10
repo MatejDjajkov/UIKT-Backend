@@ -2,12 +2,21 @@ package finki.mk.uiktBackend.service.impl;
 
 import finki.mk.uiktBackend.model.File;
 import finki.mk.uiktBackend.model.Subject;
+import finki.mk.uiktBackend.model.auth.UserInApp;
+import finki.mk.uiktBackend.model.auth.UserRoles;
 import finki.mk.uiktBackend.model.enums.ExamType;
 import finki.mk.uiktBackend.model.enums.Status;
 import finki.mk.uiktBackend.model.exceptions.FileNotFoundException;
 import finki.mk.uiktBackend.repository.FileRepository;
+import finki.mk.uiktBackend.repository.RoleRepository;
+import finki.mk.uiktBackend.repository.UserRepository;
+import finki.mk.uiktBackend.repository.UserRoleRepository;
 import finki.mk.uiktBackend.service.FileService;
 import finki.mk.uiktBackend.service.SubjectService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,10 +28,23 @@ public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
     private final SubjectService subjectService;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
 
-    public FileServiceImpl(FileRepository fileRepository, SubjectService subjectService) {
+    public FileServiceImpl(FileRepository fileRepository,
+                           SubjectService subjectService,
+                           UserRepository userRepository,
+                           BCryptPasswordEncoder passwordEncoder,
+                           RoleRepository roleRepository,
+                           UserRoleRepository userRoleRepository) {
         this.fileRepository = fileRepository;
         this.subjectService = subjectService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
 
@@ -44,7 +66,16 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        newFile.setStatus(Status.PENDING);
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        String email = authentication.getPrincipal().toString();
+        UserInApp user = userRepository.findByEmail(email);
+        if(user.getRoles().stream().anyMatch(x -> x.getRole().getName().equals("ROLE_ADMIN"))){
+            newFile.setStatus(Status.APPROVED);
+        }else{
+            newFile.setStatus(Status.PENDING);
+        }
         fileRepository.save(newFile);
     }
 
