@@ -21,6 +21,7 @@ import java.util.List;
 public class SubjectController {
 
     private final SubjectService subjectService;
+
     public SubjectController(SubjectService subjectService) {
         this.subjectService = subjectService;
     }
@@ -36,12 +37,13 @@ public class SubjectController {
     }
 
     @GetMapping("/filter")
-    public List<Subject> getAllSubjectsByYearAndSemester(@RequestParam(required = false) @Nullable Integer semesterTypeId,
-                                                         @RequestParam(required = false) @Nullable Integer yearId,
-                                                         @RequestParam(required = false) @Nullable Long moduleId,
-                                                         @RequestParam(required = false) @Nullable Long professorId) {
+    public List<Subject> getAllSubjectsByYearAndSemester(
+            @RequestParam(required = false) @Nullable Integer semesterTypeId,
+            @RequestParam(required = false) @Nullable Integer yearId,
+            @RequestParam(required = false) @Nullable Long moduleId,
+            @RequestParam(required = false) @Nullable Long professorId) {
 
-        return subjectService.filterSubjects(semesterTypeId,yearId,moduleId,professorId);
+        return subjectService.filterSubjects(semesterTypeId, yearId, moduleId, professorId);
     }
 
     @GetMapping("/search")
@@ -69,7 +71,7 @@ public class SubjectController {
 
         SemesterType semester = SemesterType.getEnumByIndex(request.getSemesterType());
         Year year = Year.getEnumByIndex(request.getYear());
-        subjectService.createSubject(request.getName(),semester,year,new ArrayList<>(),new ArrayList<>());
+        subjectService.createSubject(request.getName(), semester, year, new ArrayList<>(), new ArrayList<>());
     }
 
     @PostMapping("/edit")
@@ -78,7 +80,7 @@ public class SubjectController {
 
         SemesterType semester = SemesterType.getEnumByIndex(request.getSemesterType());
         Year year = Year.getEnumByIndex(request.getYear());
-        subjectService.editSubject(request.getId(), request.getName(),semester, year);
+        subjectService.editSubject(request.getId(), request.getName(), semester, year);
     }
 
     @GetMapping("/delete/{id}")
@@ -87,5 +89,25 @@ public class SubjectController {
         subjectService.deleteSubjectByID(id);
     }
 
-    //endpoints za editing Professors i Modules na Subject
+    // endpoints za editing Professors i Modules na Subject
 }
+
+/*
+ * 
+ * This is a controller that handles requests related to subjects. The
+ * controller has multiple endpoints that perform different CRUD operations on
+ * the Subject entity.
+ * The controller provides endpoints to:
+ * /all - returns a list of all the subjects.
+ * /{id} - returns the subject with the specified ID.
+ * /filter - returns a list of subjects filtered by semester type, year, module,
+ * and professor.
+ * /search - returns a list of subjects matching the provided search query.
+ * /page/{pageNo}/{pageSize} - returns a list of subjects with pagination.
+ * /totalSubjects - returns the total number of subjects.
+ * /add - adds a new subject to the database.
+ * /edit - edits an existing subject in the database.
+ * /delete/{id} - deletes the subject with the specified ID.
+ * The controller uses the SubjectService to perform database operations and the
+ * SubjectAddRequest and SubjecEditRequest classes to handle request bodies.
+ */
