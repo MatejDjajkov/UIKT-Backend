@@ -17,14 +17,20 @@ public class ProfessorController {
     public ProfessorController(ProfessorService professorService){
         this.professorService=professorService;
     }
+
+    // Get all professors
     @GetMapping("/all")
     public List<Professor> getAllProfessors(){
         return professorService.getAll();
     }
+
+    // Get a professor by their ID
     @GetMapping("/{id}")
     public Professor getProfessorById(@PathVariable Long id){
         return professorService.get(id);
     }
+
+    // Delete a professor by their ID (only accessible to admins)
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteProfessor(@PathVariable Long id) {
