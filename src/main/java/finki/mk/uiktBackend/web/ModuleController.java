@@ -17,18 +17,25 @@ public class ModuleController {
     public ModuleController(ModuleService moduleService) {
         this.moduleService = moduleService;
     }
+
+    // Get all modules
     @GetMapping("/all")
     public List<Module> getAllModules(){
         return moduleService.getAllModules();
     }
+
+    // Get a module by its ID
     @GetMapping("/{id}")
     public Module getModuleById(@PathVariable Long id){
         return moduleService.get(id);
     }
+
+    // Delete a module by its ID (only accessible to admins)
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteModule(@PathVariable Long id) {
         moduleService.delete(id);
     }
+
     //TODO CREATE endpoint and EDIT endpoint
 }
